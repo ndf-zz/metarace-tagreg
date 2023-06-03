@@ -449,12 +449,11 @@ class registerBox(Gtk.Grid):
                                 hintfile='chipfile.csv')
         if csvfile is not None:
             try:
-                self._riderdb.save(
-                    csvfile, ['refid', 'no', 'series', 'first', 'last', 'cat'])
-                _log.info('Saved %d riders to %s', len(self._riderdb), csvfile)
+                count = self._riderdb.save_chipfile(csvfile)
+                _log.info('Saved %d refids to %s', count, csvfile)
 
             except Exception as e:
-                _log.error('%s writing to csv %s: %s', e.__class__.__name__,
+                _log.error('%s writing chipfile csv %s: %s', e.__class__.__name__,
                            csvfile, e)
             self._numberEntry.grab_focus()
 
@@ -881,12 +880,7 @@ class tagreg(Gtk.Window):
         })
         cr.add_section('tagreg')
         cr.merge(metarace.sysconf, 'tagreg')
-        if os.path.exists(_CONFIGFILE):
-            try:
-                with open(_CONFIGFILE) as f:
-                    cr.read(f)
-            except Exception as e:
-                _log.error('%s reading config: %s', e.__class__.__name__, e)
+        cr.load(_CONFIGFILE)
 
         self._decoderSelect.set_active_id(
             cr.get_str('tagreg', 'decodertype', _DEFTYPE))
