@@ -11,6 +11,7 @@ import logging
 import metarace
 import os
 import csv
+from time import sleep
 from metarace import tod
 from metarace.jsonconfig import config
 from metarace.riderdb import riderdb
@@ -453,8 +454,8 @@ class registerBox(Gtk.Grid):
                 _log.info('Saved %d refids to %s', count, csvfile)
 
             except Exception as e:
-                _log.error('%s writing chipfile csv %s: %s', e.__class__.__name__,
-                           csvfile, e)
+                _log.error('%s writing chipfile csv %s: %s',
+                           e.__class__.__name__, csvfile, e)
             self._numberEntry.grab_focus()
 
 
@@ -861,8 +862,8 @@ class tagreg(Gtk.Window):
     def run(self):
         _log.debug('run')
         self._loadconfig()
-        with metarace.resource_file(metarace.LOGO) as f:
-            Gtk.Window.set_default_icon_from_file(str(f))
+        Gtk.Window.set_default_icon_from_file(
+            metarace.default_file(metarace.LOGO))
         self.show()
         GLib.idle_add(self._reconnect)
         GLib.timeout_add_seconds(1, self._timeout)
@@ -949,6 +950,7 @@ def main():
     lf = metarace.lockpath(configpath)
     if lf is None:
         _log.error(u'Unable to lock meet folder, already in use')
+        sleep(2)
         sys.exit(1)
     _log.debug(u'Entering meet folder %r', configpath)
     os.chdir(configpath)
