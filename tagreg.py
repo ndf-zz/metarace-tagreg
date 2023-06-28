@@ -25,13 +25,11 @@ from gi.repository import GLib
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
-gi.require_version("Gdk", "3.0")
-from gi.repository import Gdk
-
 _LOGLEVEL = logging.DEBUG
 _log = logging.getLogger('tagreg')
 _log.setLevel(_LOGLEVEL)
 
+VERSION = '1.0.2'
 _DEFTYPE = 'rrs'
 _DEFPORT = ''
 _FAILTHRESH = 10
@@ -77,7 +75,9 @@ def chooseCsvFile(title='',
                   hintfile=None):
     """Open a native file chooser dialog to load/save a CSV file"""
     ret = None
-    dialog = Gtk.FileChooserNative.new(title, parent, mode, None, None)
+    dialog = Gtk.FileChooserNative(title=title, modal=True)
+    dialog.set_transient_for(parent)
+    dialog.set_action(mode)
     filter = Gtk.FileFilter()
     filter.set_name('CSV Files')
     filter.add_mime_type('text/csv')
