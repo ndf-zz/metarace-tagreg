@@ -29,7 +29,7 @@ _LOGLEVEL = logging.DEBUG
 _log = logging.getLogger('tagreg')
 _log.setLevel(_LOGLEVEL)
 
-VERSION = '1.0.2'
+VERSION = '1.0.3'
 _DEFTYPE = 'rrs'
 _DEFPORT = ''
 _FAILTHRESH = 10
@@ -47,7 +47,7 @@ def addTextColumn(view,
     r = Gtk.CellRendererText.new()
     r.set_property('editable', False)
     if calign is not None:
-        r.set_property(u'xalign', calign)
+        r.set_property('xalign', calign)
     c = Gtk.TreeViewColumn(label, r, text=column)
     if width is not None:
         c.set_min_width(width)
@@ -131,7 +131,7 @@ class statButton(Gtk.Button):
         self.__curbg = 'idle'
         self.__image = Gtk.Image.new_from_pixbuf(srcbuf)
         self.__image.show()
-        self.__label = Gtk.Label.new(u'--')
+        self.__label = Gtk.Label.new('--')
         self.__label.set_width_chars(12)
         self.__label.set_single_line_mode(True)
         self.__label.show()
@@ -274,7 +274,7 @@ class registerBox(Gtk.Grid):
         self._followButton = Gtk.CheckButton.new_with_label('Yes')
         self._followButton.set_active(False)
         self._followButton.set_tooltip_text(
-            'Choose next rider number from current riderlist')
+            'Choose next rider number in current series from riderlist')
         self._followButton.show()
         self.attach(self._followButton, 1, 4, 1, 1)
         self._resetButton = Gtk.Button.new_with_label('Reset')
@@ -513,7 +513,7 @@ class tagreg(Gtk.Window):
         # mode 2: check out
         mb = Gtk.Box.new(Gtk.Orientation.VERTICAL, 2)
         mb.show()
-        self._checkoutStore = Gtk.ListStore.new([str, str, str, str, str, int])
+        self._checkoutStore = Gtk.ListStore.new([str, str, str, str, str, str])
         self._checkoutView = Gtk.TreeView.new_with_model(self._checkoutStore)
         addTextColumn(self._checkoutView, 'Refid', 0, width=80, sort=0)
         addTextColumn(self._checkoutView, 'No.', 1, calign=1.0, sort=5)
@@ -552,7 +552,7 @@ class tagreg(Gtk.Window):
         # mode 3: check in
         mb = Gtk.Box.new(Gtk.Orientation.VERTICAL, 2)
         mb.show()
-        self._checkinStore = Gtk.ListStore.new([str, str, str, str, str, int])
+        self._checkinStore = Gtk.ListStore.new([str, str, str, str, str, str])
         self._checkinView = Gtk.TreeView.new_with_model(self._checkinStore)
         addTextColumn(self._checkinView, 'Refid', 0, width=80, sort=0)
         addTextColumn(self._checkinView, 'No.', 1, calign=1.0, sort=5)
@@ -796,7 +796,7 @@ class tagreg(Gtk.Window):
             series = ''
             name = ''
             cat = ''
-            sort = 99999
+            sort = 'ZZZZZZ.zzzz'
             if riderid is not None and riderid in self._riderdb:
                 r = self._riderdb[riderid]
                 riderno = r['no']
@@ -944,20 +944,20 @@ def main():
     _load_images(_button_images)
     configpath = metarace.DATA_PATH
     if len(sys.argv) > 2:
-        _log.error(u'Usage: tagreg [configdir]')
+        _log.error('Usage: tagreg [configdir]')
         sys.exit(1)
     elif len(sys.argv) == 2:
         configpath = sys.argv[1]
     configpath = metarace.config_path(configpath)
     if configpath is None:
-        _log.error(u'Unable to open meet folder %r', sys.argv[1])
+        _log.error('Unable to open meet folder %r', sys.argv[1])
         sys.exit(1)
     lf = metarace.lockpath(configpath)
     if lf is None:
-        _log.error(u'Unable to lock meet folder, already in use')
+        _log.error('Unable to lock meet folder, already in use')
         sleep(2)
         sys.exit(1)
-    _log.debug(u'Entering meet folder %r', configpath)
+    _log.debug('Entering meet folder %r', configpath)
     os.chdir(configpath)
     app = tagreg()
     app.run()
