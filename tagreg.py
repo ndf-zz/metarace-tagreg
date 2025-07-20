@@ -4,6 +4,7 @@
  Transponder reader and registration tool
 
 """
+__version__ = '1.0.4'
 
 import sys
 import gi
@@ -25,11 +26,13 @@ from gi.repository import GLib
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
+PRGNAME = 'org.6_v.tagreg'
+APPNAME = 'Tagreg'
+
 _LOGLEVEL = logging.DEBUG
 _log = logging.getLogger('tagreg')
 _log.setLevel(_LOGLEVEL)
 
-VERSION = '1.0.3'
 _DEFTYPE = 'rrs'
 _DEFPORT = ''
 _FAILTHRESH = 10
@@ -862,8 +865,6 @@ class tagreg(Gtk.Window):
     def run(self):
         _log.debug('run')
         self._loadconfig()
-        Gtk.Window.set_default_icon_from_file(
-            metarace.default_file(metarace.LOGO))
         self.show()
         GLib.idle_add(self._reconnect)
         GLib.timeout_add_seconds(1, self._timeout)
@@ -940,6 +941,14 @@ def main():
     fh = logging.Formatter(metarace.LOGFORMAT)
     ch.setFormatter(fh)
     logging.getLogger().addHandler(ch)
+
+    try:
+        GLib.set_prgname(PRGNAME)
+        GLib.set_application_name(APPNAME)
+        Gtk.Window.set_default_icon_name(metarace.ICON)
+    except Exception as e:
+        _log.debug('%s setting property: %s', e.__class__.__name__, e)
+
     metarace.init()
     _load_images(_button_images)
     configpath = metarace.DATA_PATH
