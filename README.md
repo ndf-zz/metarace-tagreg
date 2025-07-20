@@ -6,28 +6,25 @@ Read transponder ids from a connected decoder.
 
 ## Requirements
 
-   - Python >= 3.9
+   - Python >= 3.11
    - Gtk >= 3.0
-   - metarace >= 2.1.1
+   - metarace >= 2.1.14
 
 
 ## Installation
 
-### Debian 11+
+Use shared installer from metarace to collect requirements
+and install with roadmeet and trackmeet:
 
-Install system requirements for tagreg and metarace with apt:
+	$ wget https://github.com/ndf-zz/metarace/raw/refs/heads/main/metarace-install.sh
+	$ sh metarace-install.sh
 
-	$ sudo apt install python3-venv python3-pip python3-cairo python3-gi python3-gi-cairo
-	$ sudo apt install gir1.2-gtk-3.0 gir1.2-rsvg-2.0 gir1.2-pango-1.0
-	$ sudo apt install python3-serial python3-paho-mqtt python3-dateutil python3-xlwt
+Alternatively, install system requirements and use pip:
 
-If not already created, add a virtualenv for metarace packages:
-
+	$ sudo apt-get install python3-venv python3-pip python3-cairo \
+	python3-gi python3-gi-cairo gir1.2-gtk-3.0 gir1.2-rsvg-2.0 \
+	gir1.2-pango-1.0
 	$ mkdir -p ~/Documents/metarace
 	$ python3 -m venv --system-site-packages ~/Documents/metarace/venv
-
-Activate the virtualenv and install tagreg with pip:
-
-	$ source ~/Documents/metarace/venv/bin/activate
-	(venv) $ pip3 install metarace-tagreg
-
+	$ ~/Documents/metarace/venv/bin/pip install metarace-tagreg
+	$ ~/Documents/metarace/venv/bin/tagreg
