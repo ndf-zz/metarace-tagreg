@@ -4,7 +4,7 @@
  Transponder reader and registration tool
 
 """
-__version__ = '1.0.4'
+__version__ = '1.0.5'
 
 import sys
 import gi
@@ -26,7 +26,7 @@ from gi.repository import GLib
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
-PRGNAME = 'org.6_v.tagreg'
+PRGNAME = 'org._6_v.tagreg'
 APPNAME = 'Tagreg'
 
 _LOGLEVEL = logging.DEBUG
